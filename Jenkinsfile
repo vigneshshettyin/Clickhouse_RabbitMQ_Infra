@@ -25,7 +25,16 @@ pipeline {
             }
         }
     }
-
+    stage('Set RabbitMQ Permissions') {
+        steps {
+            script {
+                sh '''
+                docker exec rabbitmq rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+                docker exec rabbitmq rabbitmqctl set_topic_permissions -p / admin amq.topic "eurl_click_analytics" "eurl_click_analytics"
+                '''
+            }
+        }
+    }
     post {
         always {
             sh 'rm -f *.log'

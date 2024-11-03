@@ -23,16 +23,6 @@ pipeline {
                 sh "docker compose down && docker compose up -d"
             }
         }
-        stage('Set RabbitMQ Permissions') {
-            steps {
-                script {
-                    sh '''
-                    docker exec rabbitmq rabbitmqctl set_permissions -p / ${RABBITMQ_DEFAULT_USER} ".*" ".*" ".*"
-                    docker exec rabbitmq rabbitmqctl set_topic_permissions -p / ${RABBITMQ_DEFAULT_USER} amq.topic "eurl_click_analytics" "eurl_click_analytics"
-                    '''
-                }
-            }
-        }
     }
 
     post {

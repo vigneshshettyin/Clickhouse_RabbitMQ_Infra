@@ -23,17 +23,18 @@ pipeline {
                 sh "docker compose down && docker compose up -d"
             }
         }
-    }
-    stage('Set RabbitMQ Permissions') {
-        steps {
-            script {
-                sh '''
-                docker exec rabbitmq rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
-                docker exec rabbitmq rabbitmqctl set_topic_permissions -p / admin amq.topic "eurl_click_analytics" "eurl_click_analytics"
-                '''
+        stage('Set RabbitMQ Permissions') {
+            steps {
+                script {
+                    sh '''
+                    docker exec rabbitmq rabbitmqctl set_permissions -p / ${RABBITMQ_DEFAULT_USER} ".*" ".*" ".*"
+                    docker exec rabbitmq rabbitmqctl set_topic_permissions -p / ${RABBITMQ_DEFAULT_USER} amq.topic "eurl_click_analytics" "eurl_click_analytics"
+                    '''
+                }
             }
         }
     }
+
     post {
         always {
             sh 'rm -f *.log'
@@ -102,18 +103,15 @@ pipeline {
                             </style>
                         </head>
                         <body>
-                            <!-- Email Header with Logo -->
                             <div class="email-header">
                                 <img src="https://www.jenkins.io/images/logos/jenkins/jenkins.png" alt="Jenkins Logo" />
                                 <h2>Jenkins Build Notification</h2>
                             </div>
             
-                            <!-- Build Status -->
                             <div class="build-status-card ${currentBuild.currentResult == 'SUCCESS' ? 'success-card' : 'failure-card'}">
                                 <b>Build Status:</b> ${currentBuild.currentResult}
                             </div>
             
-                            <!-- Build Details in Table Format -->
                             <div class="build-details">
                                 <table>
                                     <tr>
@@ -143,7 +141,6 @@ pipeline {
                                 </table>
                             </div>
             
-                            <!-- Footer -->
                             <div class="footer">
                                 <p>Best regards,<br><b>Jenkins CI/CD</b></p>
                                 <p>Attached logs, if any, can be found below.</p>

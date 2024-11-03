@@ -4,7 +4,6 @@ pipeline {
     environment {
         GIT_REPO_URL = 'https://github.com/vigneshshettyin/Clickhouse_RabbitMQ_Infra.git'
         GIT_BRANCH = 'main'
-        IMAGE_NAME = 'eurl-api'
         CH_CRED = credentials('CLICKHOUSE_CREDENTIALS')
         MQ_CRED = credentials('RABBITMQ_CREDENTIALS')
         CLICKHOUSE_USER = "${CH_CRED_USR}"

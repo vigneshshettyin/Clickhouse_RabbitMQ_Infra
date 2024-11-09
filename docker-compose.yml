@@ -1,7 +1,7 @@
 
 services:
   clickhouse-server:
-    image: clickhouse/clickhouse-server:latest
+    image: clickhouse/clickhouse-server:24
     container_name: clickhouse-server
     ports:
       - "8123:8123"
